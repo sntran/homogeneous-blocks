@@ -3,16 +3,16 @@ homogeneous-blocks
 
 Blocks that contains elements of the same kind.
 
-The initial work is based of Sir Trevor for fast prototyping.
-But ideally, the blocks should be abstract enough to use in
-any block system (if any).
+The initial work is based of [Sir Trevor](http://madebymany.github.io/sir-trevor-js/) for fast prototyping.
+But ideally, the blocks should be abstract enough to use in any block system (if any).
 
-These blocks use a different namespace than Sir Trevor, so if
-you want to use them in your current set up, do:
+These blocks use a different namespace than Sir Trevor, so if you want to use them in your current set up, do:
 
 ```javascript
 SirTrevor.Blocks.Columns = Homogeneous.Blocks.Columns;
 ```
+
+befor declaring any SirTrevor instances.
 
 ## Conventions
 
