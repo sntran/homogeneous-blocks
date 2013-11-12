@@ -24,6 +24,8 @@ befor declaring any SirTrevor instances.
 
 ## Blocks
 
+This is an ongoing project. Please only use the blocks that are completed.
+
 - [ ] Multi-column Block
 - [ ] Horizontal Tab Block
 - [ ] Vertical Tab Block
