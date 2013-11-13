@@ -1,7 +1,6 @@
 if (!window.Homogeneous) window.Homogeneous = {};
 if (!Homogeneous.Blocks) Homogeneous.Blocks = {};
 
-
 Homogeneous.Blocks.Columns = (function(){
 
     var md_template = _.template([
@@ -16,6 +15,8 @@ Homogeneous.Blocks.Columns = (function(){
     return SirTrevor.Block.extend({
 
         type: "columns",
+
+        activeIdx: null,
 
         editorHTML: function() {
             return md_template(this);
@@ -33,33 +34,40 @@ Homogeneous.Blocks.Columns = (function(){
 
         onBlockRender: function() {
             var block = this,
-            $container = block.$(".homogeneous-container"),
-            $remover = block.$('.homogeneous-remove'),
-            $adder = $("<a class='.linkbtn' title='Add Column'>")
-            .addClass("st-block-ui-btn st-icon st-icon--add")
-            .attr("data-icon-after", "add");
+                $adder = $("<a class='.linkbtn' title='Add Column'>")
+                    .addClass("st-block-ui-btn st-icon st-icon--add")
+                    .attr("data-icon-after", "add");
 
-            $container.on('mouseenter', '>div', function() {
-                var $columns = $container.find("> div");
+            block.$container = block.$(".homogeneous-container"),
+            block.$remover = block.$('.homogeneous-remove')
+            .click(function() {
+                var $currentColumns = block.$container.find(">div");
+                $currentColumns.eq(block.activeIdx).remove();
+                block.resize();
+            }).on('mouseenter', function(){
+                if (block.$container.find(">div").length <= 1) {
+                    $(this).css("right", 0);
+                } else {
+                    $(this).css("opacity", 1);
+                }
+            });
+
+            block.$container.on('mouseenter', '>div', function() {
+                var $columns = block.$container.find("> div");
                 if ($columns.length <= 1) return;
-                var containerWidth = $container.width(),
+                var containerWidth = block.$container.width(),
                 $column = $(this), idx = $columns.index($column),
                 right = containerWidth - (idx+1)*$column.width() + "px";
 
-                $remover.css({right: right, opacity:1});
-            }).on('mouseout', '>div', function() {
-                $remover.css({opacity:0});
+                block.activeIdx = idx;
+                block.$remover.css({right: right, opacity:1});
+            }).on('mouseleave', '>div', function() {
+                block.$remover.css({opacity:0});
             });
 
             $adder.click(function() {
-                $container.append('<div contenteditable="true"></div>');
-                var $columns = $container.find("> div"),
-                width = (100/$columns.length)+"%";
-
-                $columns.css({
-                    "width": width,
-                    "float": "left"
-                });
+                block.$container.append('<div contenteditable="true"></div>');
+                block.resize();
             });
             this.$ui.prepend($adder);
         },
@@ -70,6 +78,15 @@ Homogeneous.Blocks.Columns = (function(){
                 dataObj.columns.push(col.innerHTML);
             });
             this.setData(dataObj);
+        },
+
+        resize: function() {
+            var $columns = this.$container.find("> div"),
+                width = (100/$columns.length)+"%";
+            $columns.css({
+                "width": width,
+                "float": "left"
+            });
         }
 
     });
