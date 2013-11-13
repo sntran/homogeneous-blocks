@@ -31,6 +31,8 @@ This is an ongoing project. Please only use the blocks that are completed.
 - [ ] Vertical Tab Block
 - [ ] Accordion Tab
 - [ ] Marquee Block
+ 
+<img src="https://trello-attachments.s3.amazonaws.com/523eefe395a8b2d77a001a95/52811158b74b56941a00703e/408ae5b8527c5ae30c8f844aaac0d233/Homogenous_Blocks.png" />
 
 ### Multi-column Block
 
