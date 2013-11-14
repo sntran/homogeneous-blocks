@@ -8,7 +8,7 @@ Homogeneous.Blocks.Columns = (function(){
             '<div class="homogeneous-container clearfix" >',
                 '<div contenteditable="true"></div>',
             '</div>',
-            '<a data-icon="bin" class="homogeneous-remove st-block-ui-btn--delete st-icon" style="position:absolute; top: 0; opacity:0;">delete</a>',
+            '<a data-icon="bin" class="homogeneous-remove st-block-ui-btn--delete st-icon" style="position:absolute; top: 0; display:none;">delete</a>',
         '</div>',
         ].join("\n"));
 
@@ -45,11 +45,7 @@ Homogeneous.Blocks.Columns = (function(){
                 $currentColumns.eq(block.activeIdx).remove();
                 block.resize();
             }).on('mouseenter', function(){
-                if (block.$container.find(">div").length <= 1) {
-                    $(this).css("right", 0);
-                } else {
-                    $(this).css("opacity", 1);
-                }
+                $(this).toggle(block.$container.find(">div").length > 1);
             });
 
             block.$container.on('mouseenter', '>div', function() {
@@ -57,12 +53,12 @@ Homogeneous.Blocks.Columns = (function(){
                 if ($columns.length <= 1) return;
                 var containerWidth = block.$container.width(),
                 $column = $(this), idx = $columns.index($column),
-                right = containerWidth - (idx+1)*$column.width() + "px";
+                left = (idx)*$column.width() + "px";
 
                 block.activeIdx = idx;
-                block.$remover.css({right: right, opacity:1});
+                block.$remover.css({left: left}).show();
             }).on('mouseleave', '>div', function() {
-                block.$remover.css({opacity:0});
+                block.$remover.hide();
             });
 
             $adder.click(function() {
