@@ -1,0 +1,21 @@
+.homogeneous-container {
+	position: relative;
+}.homogeneous-container.homogeneous-tab {
+	top: -25px;
+}.homogeneous-container.homogeneous-tab hr {
+	margin: 0;
+	border-color: #ddd;
+}
+
+.homogeneous-tab-header {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}.homogeneous-tab-header > li {
+	float:left; 
+	padding: 5px 10px;
+	cursor: pointer;
+}.homogeneous-tab-header > li.active {
+	background-color: #fff;
+}.homogeneous-tab-content {
+}
