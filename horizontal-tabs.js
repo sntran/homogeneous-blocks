@@ -8,11 +8,10 @@ Homogeneous.Blocks.HorizontalTab = (function(){
             '<ul class="homogeneous-tab-header clearfix">',
                 '<li class="active" contenteditable="true">Header</li>',
             '</ul>',
-            '<hr />',
             '<div class="homogeneous-tab-content">',
                 '<div contenteditable="true"></div>',
             '</div>',
-            '<a data-icon="bin" class="homogeneous-remove st-block-ui-btn--delete st-icon" style="position:absolute; top: 0; opacity:0;">delete</a>',
+            '<a data-icon="bin" class="homogeneous-remove st-block-ui-btn--delete st-icon" style="position:absolute; top: 0; ">delete</a>',
         '</div>',
     ].join("\n"));
 
@@ -27,13 +26,14 @@ Homogeneous.Blocks.HorizontalTab = (function(){
         },
 
         loadData: function(data){
-            var tabs = data.tabs,
-            html = "";
+            var tabs = data.tabs, block = this, html = "",
+                $container = block.$(".homogeneous-container"),
+                $headers = $container.find('.homogeneous-tab-header'),
+                $contents = $container.find('.homogeneous-tab-content');
             tabs.forEach(function(tab, idx) {
-                html += tab_template({tab:tab});
+                $headers.append('<li contenteditable="true">'+tab.header+'</li>');
+                $contents.append('<div contenteditable="true">'+tab.content+'</div>');
             });
-            this.$row = this.$('.homogeneous-container');
-            this.$row.html(html);
         },
 
         onBlockRender: function() {
@@ -47,23 +47,32 @@ Homogeneous.Blocks.HorizontalTab = (function(){
                     .attr("data-icon-after", "add");
 
             $remover.click(function() {
-
+                var $tabs = $headers.find(">li"),
+                    $panels = $contents.find(">div"),
+                    $activeTab = $tabs.eq(block.activeIdx),
+                    $next = $activeTab.next();
+                if ($next.length === 0) $next = $activeTab.prev();
+                $activeTab.remove();
+                $panels.eq(block.activeIdx).remove();
+                block.activate($next);
             }).on('mouseenter', function(){
-
+                $(this).toggle($headers.find(">li").length > 1);
             });
 
-            $headers.on('click', '> li', function() {
+            $container.on('click', '.homogeneous-tab-header > li', function() {
                 block.activate($(this));
-            });
-
-            $container.on('mouseenter', '>div', function() {
-
-            }).on('mouseleave', '>div', function() {
-
+            }).on('mouseenter', '.homogeneous-tab-header > li, .homogeneous-tab-content > div', function() {
+                var $tabs = $headers.find(">li");
+                if ($tabs.length <= 1 || $(this).index() !== block.activeIdx) return;
+                var $current = $tabs.eq(block.activeIdx),
+                    left = $current.position().left;
+                $remover.css("left", left).show();
+            }).on('mouseleave', '.homogeneous-tab-header > li, .homogeneous-tab-content > div', function() {
+                $remover.hide();
             });
 
             $adder.click(function() {
-                var $newTab = $('<li contenteditable="true"</li>');
+                var $newTab = $('<li contenteditable="true"></li>');
                 $headers.append($newTab);
                 $contents.append('<div contenteditable="true"></div>');
                 block.activate($newTab);
@@ -84,9 +93,9 @@ Homogeneous.Blocks.HorizontalTab = (function(){
         },
 
         activate: function($tab) {
-            var idx = this.$headers.find(">li").removeClass("active").index($tab);
+            this.activeIdx = this.$headers.find(">li").removeClass("active").index($tab);
             $tab.addClass("active");
-            this.$contents.find(">div").hide().eq(idx).show();
+            this.$contents.find(">div").hide().eq(this.activeIdx).show();
         }
 
     });
