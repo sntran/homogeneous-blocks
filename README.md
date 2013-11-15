@@ -27,7 +27,7 @@ This is an ongoing project. Please only use the blocks that are completed.
 
 - [x] Multi-column Block
 - [x] Horizontal Tab Block
-- [ ] Vertical Tab Block
+- [x] Vertical Tab Block
 - [ ] Accordion Tab
 - [ ] Marquee Block
  

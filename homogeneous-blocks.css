@@ -23,6 +23,7 @@
 }
 .vertical-tab .homogeneous-tab-header {
 	float: left;
+	border-right: 1px solid #ddd;
 }
 
 /*
