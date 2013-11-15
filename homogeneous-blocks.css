@@ -2,9 +2,6 @@
 	position: relative;
 }.homogeneous-container.homogeneous-tab {
 	top: -25px;
-}.homogeneous-container.homogeneous-tab hr {
-	margin: 0;
-	border-color: #ddd;
 }
 
 .homogeneous-tab-header {
@@ -12,10 +9,38 @@
 	margin: 0;
 	padding: 0;
 }.homogeneous-tab-header > li {
-	float:left; 
 	padding: 5px 10px;
 	cursor: pointer;
 }.homogeneous-tab-header > li.active {
 	background-color: #fff;
 }.homogeneous-tab-content {
+	border-top: 1px solid #ddd;
+	overflow: auto;
+}
+
+.horizontal-tab .homogeneous-tab-header > li {
+	float: left;
+}
+.vertical-tab .homogeneous-tab-header {
+	float: left;
+}
+
+/*
+// Clearfix
+// --------
+// For clearing floats like a boss h5bp.com/q
+*/
+.clearfix { *zoom: 1;}
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+    /* 
+    // Fixes Opera/contenteditable bug:
+    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+    */
+    line-height: 0;
+}
+.clearfix:after {
+    clear: both;
 }

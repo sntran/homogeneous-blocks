@@ -14,20 +14,19 @@ SirTrevor.Blocks.Columns = Homogeneous.Blocks.Columns;
 
 befor declaring any SirTrevor instances.
 
-## Conventions
+## Styles Guide
 
 * A UI button to add another element.
 * A hover button to remove an element.
 * Any other functionality should only appear on hover to avoid distraction.
 * As little markup and styles as possible.
-* Inline CSS is okay.
 
 ## Blocks
 
 This is an ongoing project. Please only use the blocks that are completed.
 
-- [ ] Multi-column Block
-- [ ] Horizontal Tab Block
+- [x] Multi-column Block
+- [x] Horizontal Tab Block
 - [ ] Vertical Tab Block
 - [ ] Accordion Tab
 - [ ] Marquee Block
@@ -48,9 +47,9 @@ Tab header is also editable with text only.
 
 ### Vertical Tab Block
 
-Same as horizontal tab block, but vertical on the left. The width of tab headers are fixed.
+Same as horizontal tab block, but vertical on the left. 
 
-Another difference is that tab headers support image. Image will be scaled to fit the width. It is useful for making vCard.
+Another difference is that tab headers support image. It is useful for making vCard.
 
 ### Accordion Tab
 

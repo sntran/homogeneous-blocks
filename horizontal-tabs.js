@@ -4,7 +4,7 @@ if (!Homogeneous.Blocks) Homogeneous.Blocks = {};
 Homogeneous.Blocks.HorizontalTab = (function(){
 
     var md_template = _.template([
-        '<div class="homogeneous-container homogeneous-tab">',
+        '<div class="homogeneous-container homogeneous-tab <%= type %> clearfix" >',
             '<ul class="homogeneous-tab-header clearfix">',
                 '<li class="active" contenteditable="true">Header</li>',
             '</ul>',
@@ -64,9 +64,8 @@ Homogeneous.Blocks.HorizontalTab = (function(){
             }).on('mouseenter', '.homogeneous-tab-header > li, .homogeneous-tab-content > div', function() {
                 var $tabs = $headers.find(">li");
                 if ($tabs.length <= 1 || $(this).index() !== block.activeIdx) return;
-                var $current = $tabs.eq(block.activeIdx),
-                    left = $current.position().left;
-                $remover.css("left", left).show();
+                var $current = $tabs.eq(block.activeIdx);
+                $remover.css($current.position()).show();
             }).on('mouseleave', '.homogeneous-tab-header > li, .homogeneous-tab-content > div', function() {
                 $remover.hide();
             });
