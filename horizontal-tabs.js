@@ -1,6 +1,3 @@
-if (!window.Homogeneous) window.Homogeneous = {};
-if (!Homogeneous.Blocks) Homogeneous.Blocks = {};
-
 Homogeneous.Blocks.HorizontalTab = (function(){
 
     var md_template = _.template([
@@ -15,11 +12,14 @@ Homogeneous.Blocks.HorizontalTab = (function(){
         '</div>',
     ].join("\n"));
 
-    return SirTrevor.Block.extend({
+    return Homogeneous.Blocks.Base.extend({
+
+        components: {
+            '.homogeneous-tab-header': 'li',
+            '.homogeneous-tab-content': 'div'
+        },
 
         type: "horizontal-tab",
-
-        activeIdx: 0,
 
         editorHTML: function() {
             return md_template(this);
@@ -36,26 +36,26 @@ Homogeneous.Blocks.HorizontalTab = (function(){
             });
         },
 
-        onBlockRender: function() {
-            var block = this,
-                $container = block.$(".homogeneous-container"),
-                $remover = block.$('.homogeneous-remove'),
-                $headers = $container.find('.homogeneous-tab-header'),
-                $contents = $container.find('.homogeneous-tab-content'),
-                $adder = $("<a class='.linkbtn' title='Add Tab'>")
-                    .addClass("st-block-ui-btn st-icon st-icon--add")
-                    .attr("data-icon-after", "add");
+        onElementAdded: function(components) {
+            var $newTab = components['.homogeneous-tab-header'];
+            this.activate($newTab);
+            $newTab.focus();
+        },
 
-            $remover.click(function() {
-                var $tabs = $headers.find(">li"),
-                    $panels = $contents.find(">div"),
-                    $activeTab = $tabs.eq(block.activeIdx),
-                    $next = $activeTab.next();
-                if ($next.length === 0) $next = $activeTab.prev();
-                $activeTab.remove();
-                $panels.eq(block.activeIdx).remove();
-                block.activate($next);
-            }).on('mouseenter', function(){
+        onElementRemoved: function(components) {
+            var $activeTab = components['.homogeneous-tab-header'];
+            $next = $activeTab.next();
+            if ($next.length === 0) $next = $activeTab.prev();
+            this.activate($next);
+        },
+
+        onUIRendered: function() {
+            var block = this,
+                $container = block.$container,
+                $headers = $container.find('.homogeneous-tab-header'),
+                $contents = $container.find('.homogeneous-tab-content');
+
+            block.$remover.on('mouseenter', function(){
                 $(this).toggle($headers.find(">li").length > 1);
             });
 
@@ -65,19 +65,10 @@ Homogeneous.Blocks.HorizontalTab = (function(){
                 var $tabs = $headers.find(">li");
                 if ($tabs.length <= 1 || $(this).index() !== block.activeIdx) return;
                 var $current = $tabs.eq(block.activeIdx);
-                $remover.css($current.position()).show();
+                block.$remover.css($current.position()).show();
             }).on('mouseleave', '.homogeneous-tab-header > li, .homogeneous-tab-content > div', function() {
-                $remover.hide();
+                block.$remover.hide();
             });
-
-            $adder.click(function() {
-                var $newTab = $('<li contenteditable="true"></li>');
-                $headers.append($newTab);
-                $contents.append('<div contenteditable="true"></div>');
-                block.activate($newTab);
-                $newTab.focus();
-            });
-            this.$ui.prepend($adder);
 
             block.$headers = $headers;
             block.$contents = $contents;

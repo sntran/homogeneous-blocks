@@ -6,10 +6,23 @@ Blocks that contains elements of the same kind.
 The initial work is based of [Sir Trevor](http://madebymany.github.io/sir-trevor-js/) for fast prototyping.
 But ideally, the blocks should be abstract enough to use in any block system (if any).
 
+## Usage:
+
+Include the base Homogeneous Block, then the block files you need:
+
+```html
+<script type="text/javascript" src="homogeneous-block.js"></script>
+<script type="text/javascript" src="columns.js"></script>
+<script type="text/javascript" src="horizontal-tab.js"></script>
+<script type="text/javascript" src="vertical-tab"></script>
+```
+
 These blocks use a different namespace than Sir Trevor, so if you want to use them in your current set up, do:
 
 ```javascript
 SirTrevor.Blocks.Columns = Homogeneous.Blocks.Columns;
+SirTrevor.Blocks.HorizontalTab = Homogeneous.Blocks.HorizontalTab;
+SirTrevor.Blocks.VerticalTab = Homogeneous.Blocks.VerticalTab;
 ```
 
 befor declaring any SirTrevor instances.

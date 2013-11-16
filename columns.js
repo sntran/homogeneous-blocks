@@ -1,6 +1,3 @@
-if (!window.Homogeneous) window.Homogeneous = {};
-if (!Homogeneous.Blocks) Homogeneous.Blocks = {};
-
 Homogeneous.Blocks.Columns = (function(){
 
     var md_template = _.template([
@@ -12,11 +9,13 @@ Homogeneous.Blocks.Columns = (function(){
         '</div>',
         ].join("\n"));
 
-    return SirTrevor.Block.extend({
+    return Homogeneous.Blocks.Base.extend({
+
+        components: {
+            '.homogeneous-container': 'div'
+        },
 
         type: "columns",
-
-        activeIdx: null,
 
         editorHTML: function() {
             return md_template(this);
@@ -32,19 +31,18 @@ Homogeneous.Blocks.Columns = (function(){
             this.$row.html(html);
         },
 
-        onBlockRender: function() {
-            var block = this,
-                $adder = $("<a class='.linkbtn' title='Add Column'>")
-                    .addClass("st-block-ui-btn st-icon st-icon--add")
-                    .attr("data-icon-after", "add");
+        onElementAdded: function(components) {
+            this.resize();
+        },
 
-            block.$container = block.$(".homogeneous-container"),
-            block.$remover = block.$('.homogeneous-remove')
-            .click(function() {
-                var $currentColumns = block.$container.find(">div");
-                $currentColumns.eq(block.activeIdx).remove();
-                block.resize();
-            }).on('mouseenter', function(){
+        onElementRemoved: function(components) {
+            this.resize();
+        },
+
+        onUIRendered: function() {
+            var block = this;
+
+            block.$remover.on('mouseenter', function(){
                 $(this).toggle(block.$container.find(">div").length > 1);
             });
 
@@ -60,12 +58,6 @@ Homogeneous.Blocks.Columns = (function(){
             }).on('mouseleave', '>div', function() {
                 block.$remover.hide();
             });
-
-            $adder.click(function() {
-                block.$container.append('<div contenteditable="true"></div>');
-                block.resize();
-            });
-            this.$ui.prepend($adder);
         },
 
         toData: function() {
